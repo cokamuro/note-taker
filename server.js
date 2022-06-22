@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs");
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 //adding the GET /notes route for notes.html
-app.get("/notes", (req, res) => res.sendFile(path.join(__dirname, "public/notes.html")));
+app.get("/notes", (req, res) => res.sendFile(path.join(__dirname, "../public/notes.html")));
 
 //adding the GET /api/notes route for the db.json file contents
 app.get("/api/notes", (req, res) => res.json(readDB()));
@@ -24,7 +24,7 @@ app.delete("/api/notes/:id", (req, res) => removeNoteFromDbById(req.params.id));
 app.post("/api/notes", (req, res) => saveNoteToDB(req.body))
 
 //adding the GET * route for index.html
-app.get("*", (req, res) => res.sendFile(path.join(__dirname, "public/index.html")));
+app.get("*", (req, res) => res.sendFile(path.join(__dirname, "../public/index.html")));
 
 app.listen(PORT, () =>
     console.log(`Example app listening at http://localhost:${PORT}`)
@@ -67,7 +67,8 @@ const saveNoteToDB = (note) => {
 
 const readDB = () => {
     // function to read the JSON file and return a JSON array
-    const fileContents = fs.readFileSync("./db/db.json", "utf8");
+    const fileContents = fs.readFileSync("./db/db.json", "utf8") || []
+    //const fileContents = fs.readFileSync("./db/db.json", "utf8") || []
     if (fileContents != "[]") {
         const db = JSON.parse(fileContents)
         //check to see if it's an array
