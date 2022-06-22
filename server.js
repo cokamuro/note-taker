@@ -25,8 +25,7 @@ app.delete("/api/notes/:id", (req, res) => {
 
 //adding the POST /api/notes route for the db.json file contents
 app.post("/api/notes", (req, res) => {
-    saveNoteToDB(req.body)
-    res.send();
+    res.send(saveNoteToDB(req.body));
 });
 
 //adding the GET * route for index.html
@@ -69,6 +68,7 @@ const saveNoteToDB = (note) => {
     dbContents.push(note)
     //save the full notes collection to the "DB"
     saveDB(dbContents);
+    return note;
 }
 
 const readDB = () => {
