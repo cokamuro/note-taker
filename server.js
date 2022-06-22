@@ -18,10 +18,16 @@ app.get("/notes", (req, res) => res.sendFile(path.join(__dirname, "./public/note
 app.get("/api/notes", (req, res) => res.json(readDB()));
 
 //adding the DELETE /api/notes route for the db.json file contents
-app.delete("/api/notes/:id", (req, res) => removeNoteFromDbById(req.params.id));
+app.delete("/api/notes/:id", (req, res) => {
+    removeNoteFromDbById(req.params.id)
+    res.send();
+});
 
 //adding the POST /api/notes route for the db.json file contents
-app.post("/api/notes", (req, res) => saveNoteToDB(req.body))
+app.post("/api/notes", (req, res) => {
+    saveNoteToDB(req.body)
+    res.send();
+});
 
 //adding the GET * route for index.html
 app.get("*", (req, res) => res.sendFile(path.join(__dirname, "./public/index.html")));
